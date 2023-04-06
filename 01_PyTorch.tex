@@ -1,7 +1,15 @@
 \includegraphics[scale=0.03]{Figures/NMADL.png}\href{https://compneuro.neuromatch.io/tutorials/intro.html}{\textbf{\Huge{Neuromatch Academy: Basics and Pytorch - Summary Sheet}}}
 \small
 \begin{multicols}{3}
-\begin{textbox}{\href{https://deeplearning.neuromatch.io/tutorials/W1D1_BasicsAndPytorch/student/W1D1_Tutorial1.html}{Pytorch (W0D1T1) }}
+\begin{textbox}{\href{https://deeplearning.neuromatch.io/tutorials/W1D1_BasicsAndPytorch/student/W1D1_Tutorial1.html}{Pytorch (W1D1T1) }}
+\begin{subbox}{subbox}{Neuromatch Academy Contributors}
+\scriptsize
+\textbf{Content creators:} Shubh Pachchigar, Vladimir Haltakov, Matthew Sargent, Konrad Kording\\
+\textbf{Content reviewers:} Deepak Raya, Siwei Bai, Kelson Shilling-Scrivo\\
+\textbf{Content editors:} Anoop Kulkarni, Spiros Chavlis\\
+\textbf{Production editors:} Arush Tagade, Spiros Chavlis
+
+\end{subbox}
 \begin{subbox}{subbox}{The Basics of PyTorch}
 \scriptsize
 
@@ -9,7 +17,7 @@
 PyTorch is a Python-based scientific computing package targeted at two sets of audiences:
 \begin{itemize}
     \item 
-A replacement for NumPy optimized for the power of GPUs
+A replacement for NumPy optimized for GPUs
     \item A deep learning platform that provides significant flexibility and speed
 \end{itemize}
 At its core, PyTorch provides a few key features:
@@ -26,9 +34,8 @@ At its core, PyTorch provides a few key features:
 %%%%% Creating Tensors
 \begin{subbox}{subbox}{Creating Tensors}
 \scriptsize
-There are various ways of creating tensors, and when doing any real deep learning project, we will usually have to do so.
-
-Construct tensors directly:
+Tensors, which are like vector are the building blocks of pyTorch.
+There are various ways of creating tensors, and when doing any real deep learning project, we will usually have to do so. Construct tensors directly:
 
 \begin{lstlisting}[language=Python]
 # We can construct a tensor directly from 
@@ -36,14 +43,11 @@ Construct tensors directly:
 # such as list and tuple nested iterables 
 # can also be handled as long as the
 # dimensions are compatible
-
 # tensor from a list
 a = torch.tensor([0, 1, 2])
-
 #tensor from a tuple of tuples
 b = ((1.0, 1.1), (1.2, 1.3))
 b = torch.tensor(b)
-
 # tensor from a numpy array
 c = np.ones([2, 3])
 c = torch.tensor(c)
@@ -51,14 +55,85 @@ c = torch.tensor(c)
 Creating random tensors and tensors like other tensors:
 \begin{lstlisting}[language=Python]
 # There are also constructors for random numbers
-
 # Uniform distribution
 a = torch.rand(1, 3)
-
 # Normal distribution
 b = torch.randn(3, 4)
 \end{lstlisting}
 \end{subbox}
 \end{textbox}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textbox}{\href{https://deeplearning.neuromatch.io/tutorials/W1D1_BasicsAndPytorch/student/W1D1_Tutorial1.html}{Pytorch (W1D1T1) }}
+\begin{subbox}{subbox}{Tensor Operations in PyTorch}
+\scriptsize
+We can perform operations on tensors using methods under `torch.`
+
+\begin{lstlisting}[language=Python]
+# addition of a and b this only works if c already exist
+torch.add(a, b, out=c)
+
+# Pointwise Multiplication of a and b
+torch.multiply(a, b, out=d)
+
+\end{lstlisting}
+In PyTorch, most common Python operators are overridden.
+The common standard arithmetic operators ($+$, $-$, $*$, $/$, and $**$) have all been lifted to elementwise operations.
+\begin{lstlisting}[language=Python]
+x = torch.tensor([1, 2, 4, 8])
+y = torch.tensor([1, 2, 3, 4])
+x + y=tensor([ 2,  4,  7, 12]),
+x - y= tensor([0, 0, 1, 4]),
+x * y= tensor([ 1,  4, 12, 32]),
+x / y= tensor([1.0000, 1.0000, 1.3333, 2.0000]),
+x**y = tensor([   1,    4,   64, 4096]))
+\end{lstlisting}
+\textbf{Tensor Methods}
+
+Tensors also have a number of common arithmetic operations built in, like x.sum() or x.mean(). A list of methods can be found  in the appendix (there are a lot!).
+
+\textbf{Matrix Operations}
+
+The \textit{$@$} symbol is overridden to represent matrix multiplication. You can also use `torch.matmul()` to multiply tensors. For dot multiplication, you can use `torch.dot()`, or manipulate the axes of your tensors and do matrix multiplication. 
+
+Transposes of 2D tensors are obtained using `torch.t()` or `Tensor.T`. Note the lack of brackets for `Tensor.T` - it is an attribute, not a method.
+
+\end{subbox}
+\end{textbox}
+%%%% MANIPULATION
+\begin{textbox}{\href{https://deeplearning.neuromatch.io/tutorials/W1D1_BasicsAndPytorch/student/W1D1_Tutorial1.html}{Pytorch (W1D1T1) }}
+
+\begin{subbox}{subbox}{Manipulating Tensors in Pytorch}
+\scriptsize
+\textbf{Indexing}
+
+Just as in numpy, elements in a tensor can be accessed by index. As in any numpy array, the first element has index 0 and ranges are specified to include the first to last\_element-1. We can access elements according to their relative position to the end of the list by using negative indices. Indexing is also referred to as slicing.\\
+
+\textbf{Flatten and reshape}
+
+There are various methods for reshaping tensors. It is common to have to express 2D data in 1D format. Similarly, it is also common to have to reshape a 1D tensor into a 2D tensor. We can achieve this with the `.flatten()` and `.reshape()` methods.\\
+
+\textbf{Squeezing tensors}
+
+When processing batches of data, you will quite often be left with singleton dimensions. E.g., `[1,10]` or `[256, 1, 3]`. This dimension can quite easily mess up your matrix operations if you don't plan on it being there...\\
+
+
+
+\textbf{Permutation}
+
+Sometimes our dimensions will be in the wrong order! For example, we may be dealing with RGB images with dim $[3\times48\times64]$, but our pipeline expects the colour dimension to be the last dimension, i.e., $[48\times64\times3]$. To get around this we can use the `.permute()` method.\\
+
+\textbf{Concatenation}
+
+Two matrices can be concatenated along rows (axis 0, the first element of the shape) vs. columns (axis 1, the second element of the shape) using  `torch.cat((x, y), dim=0)`.\\
+
+
+\textbf{Conversion to Other Python Objects}
+
+Converting a tensor to a numpy.ndarray, or vice versa, is easy, and the converted result does not share memory. This minor inconvenience is quite important: when you perform operations on the CPU or GPUs, you do not want to halt computation, waiting to see whether the NumPy package of Python might want to be doing something else with the same chunk of memory.
+
+When converting to a NumPy array, the information being tracked by the tensor will be lost.
+
+\end{subbox}
+\end{textbox}
+
 \end{multicols}

@@ -1,0 +1,39 @@
+\begin{multicols}{3}
+\begin{textbox}{\href{https://deeplearning.neuromatch.io/tutorials/W1D1_BasicsAndPytorch/student/W1D1_Tutorial1.html}{Pytorch (W1D1T1) }}
+\begin{subbox}{subbox}{Graphics processing unit (GPU)}
+\scriptsize
+
+When using Colab notebooks, by default, will not have access to a GPU. In order to start using GPUs we need to request one. We can do this by going to the runtime tab at the top of the page. 
+
+By following \textbf{Runtime} → \textbf{Change runtime type} and selecting \textit{GPU} from the \textbf{Hardware Accelerator} dropdown list, we can start playing with sending tensors to GPUs.
+
+Once you have done this your runtime will restart and you will need to rerun the first setup cell to re-import PyTorch. Then proceed to the next cell.
+
+For more information on the GPU usage policy you can view in the Appendix.\\
+
+\textbf{Compute Unified Device Architecture (CUDA)}\\
+
+\href{(https://developer.nvidia.com/cuda-toolkit)}{\textbf{CUDA}} is an API developed by Nvidia for interfacing with GPUs. PyTorch provides us with a layer of abstraction, and allows us to launch CUDA kernels using pure Python.
+
+In short, we get the power of parallelizing our tensor computations on GPUs, whilst only writing (relatively) simple Python!
+
+Here, we define the function "set\_device", which returns the device use in the notebook, i.e., "cpu" or "cuda". Unless otherwise specified, we use this function on top of every tutorial, and we store the device variable such as
+
+\begin{lstlisting}[language=Python]
+DEVICE = set_device()
+\end{lstlisting}
+
+Let's define the function using the PyTorch package `torch.cuda`, which is lazily initialized, so we can always import it, and use `is\_available()` to determine if our system supports CUDA.
+
+\textbf{Operations between CPU tensors and CUDA tensors}
+
+Note that the type of the tensor changed after calling .to(). What happens if we try and perform operations on tensors on devices?
+
+We cannot combine CUDA tensors and CPU tensors in this fashion. If we want to compute an operation that combines tensors on different devices, we need to move them first! We can use the .to() method as before, or the .cpu() and .cuda() methods. Note that using the .cuda() will throw an error, if CUDA is not enabled in your machine.
+
+Generally, in this course, all Deep Learning is done on the GPU, and any computation is done on the CPU, so sometimes we have to pass things back and forth.
+
+\end{subbox}
+\end{textbox}
+
+\end{multicols}
